@@ -11,7 +11,7 @@ from .errors import (
     InvalidEventError,
     InvalidTimestampError,
 )
-from .models import KEYS, LEVELS
+from .models import KEYS, LEVELS, DELIMITERS
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +81,7 @@ def validate_file(event, file, line_number, stats):
     if not event['level'].strip():
         raise InvalidEventError(f'Файл {file}. Строка {line_number}: level не должен быть пустым')
 
-    if event['level'] not in stats['by_level']:
+    if event['level'].strip() not in stats['by_level']:
         raise InvalidEventError(f'Файл {file}. Строка {line_number}: неизвестный уровень {event['level']}')
 
     if not isinstance(event['message'], str):
@@ -95,10 +95,19 @@ def validate_file(event, file, line_number, stats):
 
 
 def read_csv(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
-    reader = csv.DictReader(f)
+    headline = f.readline()
+    if not headline.strip():
+        return stats
+    try:
+        delimiter = csv.Sniffer().sniff(headline, delimiters=DELIMITERS).delimiter
+    except csv.Error as exc:
+        raise InvalidEventError(f'Файл {file}. Не удалось определить разделитель') from exc
+    f.seek(0)
+    reader = csv.DictReader(f, delimiter=delimiter)
     for line_number, event in enumerate(reader, start=2):
         try:
             validate_file(event, file, line_number, stats)
+
             event['level'] = event['level'].strip()
             event['timestamp'] = check_parse_timestamp(event['timestamp'], line_number, file)
             stats = update_stat(event, stats)
@@ -108,7 +117,7 @@ def read_csv(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
                     raise
                 raise InvalidEventError(f'Файл {file}. Строка {line_number}. Ошибка: {exc}') from exc
             stats['skipped_invalid'] += 1
-            logger.warning(f'Пропуск строки: {exc}')
+            logger.warning(exc)
 
     return stats
 
@@ -137,6 +146,6 @@ def read_json(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
                     raise
                 raise InvalidEventError(f'Файл {file}. Строка {line_number}. Ошибка: {exc}') from exc
             stats['skipped_invalid'] += 1
-            logger.warning(f'Пропуск строки: {exc}')
+            logger.warning(exc)
 
     return stats

@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 from argparse import ArgumentParser
 
 from .errors import CliConfigError, StreamStatsError
@@ -9,6 +10,7 @@ from .report import out_report, write_report
 
 def main() -> int:
     parser = ArgumentParser(description='Анализатор')
+    logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
 
     subparser = parser.add_subparsers(dest='command', required=True)
     analyze_parser = subparser.add_parser('analyze')
