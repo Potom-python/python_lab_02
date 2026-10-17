@@ -13,8 +13,10 @@ class EventParseError(StreamStatsError):
 class InvalidEventError(StreamStatsError):
     pass
 
+
 class InvalidTimestampError(InvalidEventError):
     pass
+
 
 class CliConfigError(StreamStatsError):
     pass

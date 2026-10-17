@@ -1,4 +1,4 @@
-def update_stat(event: dict , stats: dict) -> dict:
+def update_stat(event: dict, stats: dict) -> dict:
     data = event['timestamp']
     if stats['first_timestamp'] is None or data < stats['first_timestamp']:
         stats['first_timestamp'] = data

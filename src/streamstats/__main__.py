@@ -1,9 +1,11 @@
-import sys, os
+import os
+import sys
 from argparse import ArgumentParser
 
-from .errors import StreamStatsError, CliConfigError
+from .errors import CliConfigError, StreamStatsError
 from .parsers import parse_json_and_csv
 from .report import out_report, write_report
+
 
 def main() -> int:
     parser = ArgumentParser(description='Анализатор')
@@ -11,7 +13,7 @@ def main() -> int:
     subparser = parser.add_subparsers(dest='command', required=True)
     analyze_parser = subparser.add_parser('analyze')
     analyze_parser.add_argument('inputs', nargs='+')
-    analyze_parser.add_argument('--format', choices=['csv', 'jsonl'], dest='format',  nargs='+', required=True)
+    analyze_parser.add_argument('--format', choices=['csv', 'jsonl'], dest='format', nargs='+', required=True)
     analyze_parser.add_argument('--output', dest='output')
     analyze_parser.add_argument('--skip-invalid', action='store_true')
     args = parser.parse_args()
