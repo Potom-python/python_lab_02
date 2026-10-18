@@ -1,7 +1,7 @@
 import argparse
+import logging
 import os
 import sys
-import logging
 
 from .errors import CliConfigError, StreamStatsError
 from .parsers import parse_json_and_csv

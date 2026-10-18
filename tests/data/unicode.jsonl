@@ -1,0 +1,3 @@
+{"timestamp": "2026-10-14T10:00:00+00:00", "level": "ERROR", "source": "база", "message": "Сбой подключения"}
+{"timestamp": "2026-10-14T10:01:00+00:00", "level": "CRITICAL", "source": "база", "message": "Диск переполнен"}
+{"timestamp": "2026-10-14T10:02:00+00:00", "level": "INFO", "source": "сервер", "message": "Запуск выполнен"}

@@ -1,0 +1,6 @@
+{"timestamp": "2026-10-14T10:00:00+00:00", "level": "INFO", "source": "web", "message": "m"}
+{"timestamp": "2026-10-14T10:01:00+00:00", "level": null, "source": "web", "message": "m"}
+{"timestamp": "2026-10-14T10:02:00+00:00", "level": 5, "source": "web", "message": "m"}
+{"timestamp": "2026-10-14T10:03:00+00:00", "source": "web", "message": "m"}
+{"timestamp": "2026-10-14T10:04:00+00:00", "level": " ERROR ", "source": "db", "message": "m"}
+{"timestamp": "2026-10-14T10:05:00+00:00", "level": "TRACE", "source": "web", "message": "m"}

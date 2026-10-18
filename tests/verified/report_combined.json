@@ -1,0 +1,45 @@
+{
+  "total": 20,
+  "by_level": {
+    "DEBUG": 2,
+    "ERROR": 6,
+    "INFO": 4,
+    "CRITICAL": 4,
+    "WARNING": 4
+  },
+  "by_source": {
+    "web": {
+      "total": 8,
+      "errors": 2
+    },
+    "database": {
+      "total": 4,
+      "errors": 4
+    },
+    "auth": {
+      "total": 4,
+      "errors": 4
+    },
+    "cache": {
+      "total": 4,
+      "errors": 0
+    }
+  },
+  "top_error_sources": [
+    {
+      "source": "auth",
+      "errors": 4
+    },
+    {
+      "source": "database",
+      "errors": 4
+    },
+    {
+      "source": "web",
+      "errors": 2
+    }
+  ],
+  "first_timestamp": "2026-10-14 10:00:00",
+  "last_timestamp": "2026-10-14 10:09:00",
+  "skipped_invalid": 0
+}

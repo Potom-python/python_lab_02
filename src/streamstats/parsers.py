@@ -11,7 +11,7 @@ from .errors import (
     InvalidEventError,
     InvalidTimestampError,
 )
-from .models import KEYS, LEVELS, DELIMITERS
+from .models import DELIMITERS, KEYS, LEVELS
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ def parse_json_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
     return stats
 
 
-def validate_file(event, file, line_number, stats):
+def validate_file(event: dict, file: str, line_number: int, stats: dict):
     if not all(key in event for key in KEYS):
         raise InvalidEventError(f'Файл {file}. Строка {line_number}: отсутствуют обязательные поля')
 

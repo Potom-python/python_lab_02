@@ -1,0 +1,29 @@
+{
+  "total": 3,
+  "by_level": {
+    "DEBUG": 0,
+    "INFO": 1,
+    "WARNING": 0,
+    "ERROR": 1,
+    "CRITICAL": 1
+  },
+  "by_source": {
+    "база": {
+      "total": 2,
+      "errors": 2
+    },
+    "сервер": {
+      "total": 1,
+      "errors": 0
+    }
+  },
+  "top_error_sources": [
+    {
+      "source": "база",
+      "errors": 2
+    }
+  ],
+  "first_timestamp": "2026-10-14 10:00:00",
+  "last_timestamp": "2026-10-14 10:02:00",
+  "skipped_invalid": 0
+}

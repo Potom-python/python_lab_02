@@ -1,0 +1,3 @@
+{"timestamp": "2026-10-14T13:00:00+03:00", "level": "INFO", "source": "a", "message": "m"}
+{"timestamp": "2026-10-14T09:30:00-01:00", "level": "ERROR", "source": "a", "message": "m"}
+{"timestamp": "2026-10-14T10:15:00Z", "level": "INFO", "source": "b", "message": "m"}

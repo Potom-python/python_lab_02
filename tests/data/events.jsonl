@@ -1,0 +1,10 @@
+{"timestamp":"2026-10-14T10:00:00+00:00","level":"INFO","source":"web","message":"Сервер запущен"}
+{"timestamp":"2026-10-14T10:01:00+00:00","level":"ERROR","source":"database","message":"Ошибка подключения"}
+{"timestamp":"2026-10-14T10:02:00+00:00","level":"WARNING","source":"web","message":"Высокая нагрузка"}
+{"timestamp":"2026-10-14T10:03:00+00:00","level":"CRITICAL","source":"database","message":"База недоступна"}
+{"timestamp":"2026-10-14T10:04:00+00:00","level":"ERROR","source":"auth","message":"Ошибка авторизации"}
+{"timestamp":"2026-10-14T10:05:00+00:00","level":"INFO","source":"web","message":"Запрос обработан"}
+{"timestamp":"2026-10-14T10:06:00+00:00","level":"DEBUG","source":"cache","message":"Кэш проверен"}
+{"timestamp":"2026-10-14T10:07:00+00:00","level":"ERROR","source":"web","message":"Ошибка обработки запроса"}
+{"timestamp":"2026-10-14T10:08:00+00:00","level":"CRITICAL","source":"auth","message":"Сервис авторизации недоступен"}
+{"timestamp":"2026-10-14T10:09:00+00:00","level":"WARNING","source":"cache","message":"Кэш почти заполнен"}

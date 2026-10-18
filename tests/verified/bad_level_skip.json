@@ -1,0 +1,29 @@
+{
+  "total": 2,
+  "by_level": {
+    "DEBUG": 0,
+    "INFO": 1,
+    "WARNING": 0,
+    "ERROR": 1,
+    "CRITICAL": 0
+  },
+  "by_source": {
+    "web": {
+      "total": 1,
+      "errors": 0
+    },
+    "db": {
+      "total": 1,
+      "errors": 1
+    }
+  },
+  "top_error_sources": [
+    {
+      "source": "db",
+      "errors": 1
+    }
+  ],
+  "first_timestamp": "2026-10-14 10:00:00",
+  "last_timestamp": "2026-10-14 10:04:00",
+  "skipped_invalid": 4
+}
