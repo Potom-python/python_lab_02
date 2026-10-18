@@ -47,7 +47,7 @@ python -m streamstats --help
 через разделитель. Разделитель можно выбирать из стандартных
 "\t;,". В следующих строках информация соответствующая этим полям.  
 **JSONL**: JSON объект с нужными полями.  
-**Все метки времени переводятся в CSV**
+**Все метки времени переводятся в UTC**
 
 # Отчет
 ```json
@@ -73,7 +73,7 @@ python -m streamstats --help
 - errors - количество событий уровней ERROR и CRITICAL.
 - top_error_sources - топ 5 источников по количеству ошибок.
 - first_timestamp и last_timestamp - время первого и последнего события соответственно
-- skipped_invalid - считает сколько строе было пропущено при введенном аргументе `--skip-invalid`
+- skipped_invalid - считает сколько строк было пропущено при введенном аргументе `--skip-invalid`
 - Время в отчёте указано в UTC.
 
 Как это устроено внутри: `parse_json_and_csv()` в `parsers.py` обходит файлы
@@ -110,7 +110,7 @@ class CliConfigError(StreamStatsError):
 
 # Тесты и help
 ```bash
-pyrhon -m pytest
+python -m pytest
 python -m streamstats --help
 ```
 Тесты используют готовые файлы из `tests/data`
