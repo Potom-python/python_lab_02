@@ -1,7 +1,7 @@
+import argparse
 import os
 import sys
 import logging
-from argparse import ArgumentParser
 
 from .errors import CliConfigError, StreamStatsError
 from .parsers import parse_json_and_csv
@@ -9,9 +9,17 @@ from .report import out_report, write_report
 
 
 def main() -> int:
-    parser = ArgumentParser(description='Анализатор')
     logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
-
+    epilog = ('Допустимые форматы файлов:\n'
+              'csv и jsonl\n'
+              'Использование:\n'
+              'python -m streamstats analyze INPUT ...'
+              ' --format csv | jsonl ... --output REPORT.json\n'
+              'python -m streamstats analyze INPUT --format jsonl --skip-invalid\n'
+              )
+    parser = argparse.ArgumentParser(description='Анализатор файлов',
+                            epilog=epilog,
+                            formatter_class=argparse.RawDescriptionHelpFormatter)
     subparser = parser.add_subparsers(dest='command', required=True)
     analyze_parser = subparser.add_parser('analyze')
     analyze_parser.add_argument('inputs', nargs='+')
