@@ -17,6 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 def check_parse_timestamp(timestamp: str, line_number: int, file: str) -> datetime:
+    """Проверка на корректность timestamp и возвращает обработанный timestamp
+
+    Сначала проверяет является ли timestamp строкой.
+    Далее избавляется от лишних символов в начале и в конце для дальнейшей обработки.
+    Смотрит не превратился ли timestamp в пустую строку после .strip().
+    Переводит в объект datetime и проверяет корректный ли формат.
+    Проверяет содержит ли timestamp информацию о часовом поясе.
+    Возвращает объект datetime с часовым поясом UTC.
+    """
     if not isinstance(timestamp, str):
         raise InvalidTimestampError(f'Файл {file}. Строка {line_number}: timestamp должен быть строкой')
 
@@ -36,7 +45,17 @@ def check_parse_timestamp(timestamp: str, line_number: int, file: str) -> dateti
     return parsed_timestamp.astimezone(UTC)
 
 
-def parse_json_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
+def parse_jsonl_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
+    """Парсер jsonl и csv файлов.
+
+    Создает изначальную статистику.
+    Проходит по каждому файлу и перезаписывает stats исходя из файла.
+    если был введен неверный формат, то вызывается исключение.
+    После обработки всех файлов сортирует ресурсы по ошибкам и именам.
+    Исходя из сортировки записывает первые top_n ресурсов в top_error_sources.
+    Переводит last и first timestamp из datetime в отформатированную строку.
+    Возвращает конечную статистику по всем файлам.
+    """
     stats = {
         'total': 0,
         'by_level': dict.fromkeys(LEVELS, 0),
@@ -52,7 +71,7 @@ def parse_json_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
             if format[index] == 'csv':
                 stats = read_csv(f, stats, skip, file)
             elif format[index] == 'jsonl':
-                stats = read_json(f, stats, skip, file)
+                stats = read_jsonl(f, stats, skip, file)
             else:
                 raise InputFormatError(
                     f'Неподдерживаемый формат: {format}'
@@ -72,6 +91,17 @@ def parse_json_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
 
 
 def validate_file(event: dict, file: str, line_number: int, stats: dict):
+    """Проверка файлов на корректность
+
+    Происходит несколько этапов проверки:
+    1. Проверка на содержание всех обязательных ключей в файле
+    2. Проверка на то является ли поле level строкой
+    3. Проверка на пустоту поля level
+    4. Проверка является ли поле level разрешенным
+    5. Проверка является ли поле message строкой
+    6. Проверка является ли поле source строкой
+    7. Проверка на пустоту source
+    """
     if not all(key in event for key in KEYS):
         raise InvalidEventError(f'Файл {file}. Строка {line_number}: отсутствуют обязательные поля')
 
@@ -95,6 +125,22 @@ def validate_file(event: dict, file: str, line_number: int, stats: dict):
 
 
 def read_csv(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
+    """Функция для чтения csv файлов.
+
+    Для начала определяет делитель csv файла с помощью csv.Sniffer(),
+    если его не удалось найти вызывает исключение.
+    Далее создает итератор через csv.DictReader() и с помощью него
+    построчно проходит по файлу. Каждая строка проверяется на валидность.
+    Дальше происходит проверка timestamp с помощью функции
+    check_parse_timestamp() и обновление статистики с помощью функции
+    update_stat().
+    Если во время этого вызывается исключение, то оно перехватывается,
+    после чего происходит проверка на тип вызванного исключения.
+    Если не InvalidEventError, то она в нее превращается.
+    Если в CLI был передан аргумент --skip-invalid, то ошибка не вызывается,
+    а записывается в логи с номером строки и названием файла, также
+    обновляется количество пропущенных строк.
+    """
     headline = f.readline()
     if not headline.strip():
         return stats
@@ -122,7 +168,23 @@ def read_csv(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
     return stats
 
 
-def read_json(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
+def read_jsonl(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
+    """Функция для чтения jsonl файлов.
+    
+    Проходится по всем строкам файла. Если они пустые пропускает их.
+    Далее преобразует строку файла в dict, если это не удаетсяБ то
+    вызывается исключение. Далее происходит проверка, точно ли в
+    JSON файле был словарь.
+    Дальше происходит проверка timestamp с помощью функции
+    check_parse_timestamp() и обновление статистики с помощью функции
+    update_stat().
+    Если во время этого вызывается исключение, то оно перехватывается,
+    после чего происходит проверка на тип вызванного исключения.
+    Если не InvalidEventError, то она в нее превращается.
+    Если в CLI был передан аргумент --skip-invalid, то ошибка не вызывается,
+    а записывается в логи с номером строки и названием файла, также
+    обновляется количество пропущенных строк.
+    """
     for line_number, line in enumerate(f, start=1):
         if not line.strip():
             continue

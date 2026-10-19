@@ -76,7 +76,7 @@ python -m streamstats --help
 - skipped_invalid - считает сколько строк было пропущено при введенном аргументе `--skip-invalid`
 - Время в отчёте указано в UTC.
 
-Как это устроено внутри: `parse_json_and_csv()` в `parsers.py` обходит файлы
+Как это устроено внутри: `parse_jsonl_and_csv()` в `parsers.py` обходит файлы
 по очереди и вызывает `read_csv()` или `read_json()`. Каждая строка
 проверяется в `validate_file()` и `check_parse_timestamp()`, после чего
 `update_stat()` из `analysis.py` обновляет счётчики. Когда файлы закончились,
@@ -114,7 +114,7 @@ python -m pytest
 python -m streamstats --help
 ```
 Тесты используют готовые файлы из `tests/data`
-прогоняют их через функцию `parse_json_and_csv()`
+прогоняют их через функцию `parse_jsonl_and_csv()`
 или запускает программу через subprocess, получившийся
 отчет хранится в временной директории tmp_path от pytest
 и сверяется с верным отчетом, который хранится в `tests/verified`.
