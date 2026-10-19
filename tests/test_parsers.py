@@ -23,7 +23,7 @@ def read_json(path: str) -> dict:
         return json.load(f)
 
 
-def run_cli(tmp_path, inputs: list, formats: list, skip_invalid=False, out_file=None, to_stdout=False):
+def run_cli(tmp_path, inputs: list, formats: list, skip_invalid: bool=False, out_file=None, to_stdout: bool=False):
     if out_file is None:
         out_file = os.path.join(tmp_path, 'report.json')
 
@@ -134,12 +134,6 @@ def test_invalid_timestamp_skips(caplog):
     verified_res = read_json(os.path.join(VERIFIED, 'report_skip.json'))
     assert f'Файл {file}. Строка 3: некорректный timestamp not-a-date' in caplog.text
     assert checked_file == verified_res
-
-
-def test_no_timezone():
-    with pytest.raises(InvalidTimestampError, match='часовой пояс'):
-        parse_jsonl_and_csv([os.path.join(DATA, 'no_timezone.jsonl')],
-                            ['jsonl'], False)
 
 
 def test_invalid_json_stops():

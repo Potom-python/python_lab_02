@@ -16,9 +16,9 @@ pip install -e .
 
 После этого команда доступна как модуль:
 ```bash
-python -m streamstats analyze data/events.csv --format csv --output report.json
-python -m streamstats analyze data/events.jsonl --format jsonl --skip-invalid
-python -m streamstats analyze data/events.csv data/events.jsonl --format csv jsonl --output report.json
+python -m streamstats analyze data/your_file --format your_format --output report.json
+python -m streamstats analyze data/your_file --format your_format --skip-invalid
+python -m streamstats analyze data/your_file1 data/your_file2 --format your_format1 your_format2 --output report.json
 python -m streamstats --help
 ```
 
@@ -36,12 +36,12 @@ python -m streamstats --help
 
 У каждого события 4 обязательных поля:
 
-| Поле    | Требования                                 |
-|---------|--------------------------------------------|
-| timestamp | строка в формате ISO 8601 с часовым поясом |
-| level   | DEBUG, INFO, WARNING, ERROR, CRITICAL      |
-| source  | непустая строка                            |
-| message | строка                                     |
+| Поле    | Требования                |
+|---------|---------------------------|
+| timestamp | строка в формате ISO 8601 |
+| level   | DEBUG, INFO, WARNING, ERROR, CRITICAL |
+| source  | непустая строка           |
+| message | строка                    |
 
 **CSV**: первая строка содержит заголовки с именами полей
 через разделитель. Разделитель можно выбирать из стандартных

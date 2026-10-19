@@ -2,7 +2,7 @@ import json
 
 
 def out_report(result: dict) -> str:
-    """Превращает dict в JSONт"""
+    """Превращает dict в JSON"""
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 

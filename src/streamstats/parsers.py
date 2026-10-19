@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 
 def check_parse_timestamp(timestamp: str, line_number: int, file: str) -> datetime:
-    """Проверка на корректность timestamp и возвращает обработанный timestamp
+    """Проверка на корректность timestamp и возвращает обработанный timestamp.
 
     Сначала проверяет является ли timestamp строкой.
     Далее избавляется от лишних символов в начале и в конце для дальнейшей обработки.
     Смотрит не превратился ли timestamp в пустую строку после .strip().
     Переводит в объект datetime и проверяет корректный ли формат.
-    Проверяет содержит ли timestamp информацию о часовом поясе.
+    Если часового пояса нет, то считает время UTC.
     Возвращает объект datetime с часовым поясом UTC.
     """
     if not isinstance(timestamp, str):
@@ -40,12 +40,12 @@ def check_parse_timestamp(timestamp: str, line_number: int, file: str) -> dateti
         raise InvalidTimestampError(f'Файл {file}. Строка {line_number}: некорректный timestamp {timestamp}') from exc
 
     if parsed_timestamp.tzinfo is None:
-        raise InvalidTimestampError(f'Файл {file}. Строка {line_number}: timestamp должен содержать часовой пояс')
+        parsed_timestamp = parsed_timestamp.replace(tzinfo=UTC)
 
     return parsed_timestamp.astimezone(UTC)
 
 
-def parse_jsonl_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
+def parse_jsonl_and_csv(files: list, format: list, skip: bool, top_n: int=5) -> dict:
     """Парсер jsonl и csv файлов.
 
     Создает изначальную статистику.
@@ -90,7 +90,7 @@ def parse_jsonl_and_csv(files: list, format: list, skip: bool, top_n=5) -> dict:
     return stats
 
 
-def validate_file(event: dict, file: str, line_number: int, stats: dict):
+def validate_file(event: dict, file: str, line_number: int, stats: dict) -> None:
     """Проверка файлов на корректность
 
     Происходит несколько этапов проверки:
@@ -172,7 +172,7 @@ def read_jsonl(f: TextIO, stats: dict, skip: bool, file: str) -> dict:
     """Функция для чтения jsonl файлов.
     
     Проходится по всем строкам файла. Если они пустые пропускает их.
-    Далее преобразует строку файла в dict, если это не удаетсяБ то
+    Далее преобразует строку файла в dict, если это не удается, то
     вызывается исключение. Далее происходит проверка, точно ли в
     JSON файле был словарь.
     Дальше происходит проверка timestamp с помощью функции
