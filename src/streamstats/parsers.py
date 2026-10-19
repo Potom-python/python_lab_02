@@ -83,9 +83,9 @@ def parse_jsonl_and_csv(files: list, format: list, skip: bool, top_n: int=5) -> 
         if s[1]['errors'] != 0:
             stats['top_error_sources'].append({'source': f'{s[0]}', 'errors': s[1]['errors']})
     if stats['last_timestamp']:
-        stats['last_timestamp'] = stats['last_timestamp'].strftime('%Y-%m-%d %H:%M:%S')
+        stats['last_timestamp'] = stats['last_timestamp'].isoformat()
     if stats['first_timestamp']:
-        stats['first_timestamp'] = stats['first_timestamp'].strftime('%Y-%m-%d %H:%M:%S')
+        stats['first_timestamp'] = stats['first_timestamp'].isoformat()
 
     return stats
 

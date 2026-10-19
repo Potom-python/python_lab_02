@@ -23,7 +23,7 @@
       "errors": 1
     }
   ],
-  "first_timestamp": "2026-10-14 10:00:00",
-  "last_timestamp": "2026-10-14 10:30:00",
+  "first_timestamp": "2026-10-14T10:00:00+00:00",
+  "last_timestamp": "2026-10-14T10:30:00+00:00",
   "skipped_invalid": 0
 }
